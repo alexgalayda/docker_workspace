@@ -5,10 +5,15 @@ import subprocess
 from switch_mount import substitution_file as sf
 
 if __name__ == '__main__':
-    idx = sys.argv.index('-f') + 1
-    tmp_path = sys.argv[idx] + '.tmp'
-    sf(sys.argv[idx], new_path=tmp_path)
+    tmp_path = None
+    try:
+        idx = sys.argv.index('-f') + 1
+    except Exception:
+        pass
+    else:
+        tmp_path = sys.argv[idx] + '.tmp'
+        sf(sys.argv[idx], new_path=tmp_path)
+        sys.argv[idx] = tmp_path
     sys.argv[0] = '/usr/bin/docker-compose'
-    sys.argv[idx] = tmp_path
     os.system(' '.join(sys.argv))
-    os.remove(tmp_path)
+    if tmp_path: os.remove(tmp_path)

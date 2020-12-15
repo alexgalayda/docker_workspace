@@ -75,8 +75,6 @@ RUN chmod +x /usr/bin/docker-compose
 #SSH-server
 RUN mkdir /var/run/sshd
 RUN sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
-ENV NOTVISIBLE="in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
 
 #make utils
 COPY ./utils/switch_mount.py /usr/local/bin/switch_mount.py
