@@ -1,4 +1,0 @@
-jupyterlab
-ranger-fm
-#docker
-#dockerpty

@@ -1,23 +1,19 @@
-#!/bin/python3
+#!/usr/bin/python3
 import os
 import sys
 import subprocess
 from switch_mount import substitution_file as sf
-from switch_mount import sudstitution_str as ss
 
 if __name__ == '__main__':
     tmp_path = None
     try:
         idx = sys.argv.index('-f') + 1
+    except Exception:
+        pass
+    else:
         tmp_path = sys.argv[idx] + '.tmp'
         sf(sys.argv[idx], new_path=tmp_path)
         sys.argv[idx] = tmp_path
-    except:
-        pass
-    sys.argv[0] = '/usr/bin/docker'
-    if '-v' in sys.argv:
-        os.system(ss(' '.join(sys.argv)))
-    else:
-        os.system(' '.join(sys.argv))
-    if tmp_path:
-        os.remove(tmp_path)
+    sys.argv[0] = '/usr/bin/docker-compose'
+    os.system(' '.join(sys.argv))
+    if tmp_path: os.remove(tmp_path)

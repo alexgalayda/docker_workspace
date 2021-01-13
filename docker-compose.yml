@@ -1,29 +1,36 @@
 version: "3.8"
 services:
-        work_space:
-                build:
-                        context: $BUILD_CONTEXT
-                        dockerfile: $DOCKERFILE_PATH/Dockerfile
-                        args:
-                                - NAME=$NAME
-                                - PUB=$PUB
-                                - HOST=$HOST
-                                - PORT_JUP=$PORT_JUP
-                                - PROJECT_PATH=$PROJECT_PATH
-                                - HOST_NAME=$USER
-                                - HOST_IP=$HOST_IP
-                                - DOCKER_CLI_VERSION=$DOCKER_CLI_VERSION
-                                - DOCKER_COMPOSE_CLI_VERSION=$DOCKER_COMPOSE_CLI_VERSION
-                environment:
-                        - PORT_JUP=$PORT_JUP
-                image: $IMAGE
-                container_name: $CONTAINER
-                ports:
-                        - "${PORT}:22"
-                        - "${PORT_JUP}:${PORT_JUP}"  
-                tty: true
-                stdin_open: true 
-                volumes:
-                        - ${SHARA}:${SHARA_DOC}
-                        - ${STORAGE}:${STORAGE_DOC}
-                        - ${DHOST}:/var/run/docker.sock
+    basic_work_space:
+        build:
+            context: .
+            dockerfile: ./Dockerfile_basic
+            args:
+                - USERNAME=$USERNAME
+        image: $BASE_IMAGE
+    work_space:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+            args:
+                - BASE_IMAGE=$BASE_IMAGE
+                #- JUP_PORT=$JUP_PORT
+                - DOCKER_CLI_VERSION=$DOCKER_CLI_VERSION
+                - DOCKER_COMPOSE_CLI_VERSION=$DOCKER_COMPOSE_CLI_VERSION
+        environment:
+            - JUP_PORT=$JUP_PORT
+            - HOST_WORKSPACE=$HOST_WORKSPACE
+            - WORKSPACE=$WORKSPACE
+        image: $IMAGE
+        container_name: $CONTAINER
+        ports:
+                - "${SSH_PORT}:22"
+                - "${JUP_PORT}:${JUP_PORT}"  
+        depends_on:
+            - basic_work_space
+        tty: true
+        stdin_open: true 
+        volumes:
+                - ${PWD}/utils:/res
+                - ${HOST_WORKSPACE}:/home/${USERNAME}/workspace
+                - ${HOST_STORAGE}:${STORAGE}
+                - ${DOCKER_SOCK}:/var/run/docker.sock

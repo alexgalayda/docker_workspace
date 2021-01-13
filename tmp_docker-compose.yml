@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+        work_space:
+                build:
+                        context: .
+                        dockerfile: ./Dockerfile_t
+                        args:
+                                - NAME=$NAME
+                                - PUB=$PUB
+                                - HOST=$HOST
+                                - PORT_JUP=$PORT_JUP
+                                - PROJECT_PATH=.
+                                - HOST_NAME=$USER
+                                - HOST_IP=$HOST_IP
+                                - DOCKER_CLI_VERSION=$DOCKER_CLI_VERSION
+                                - DOCKER_COMPOSE_CLI_VERSION=$DOCKER_COMPOSE_CLI_VERSION
+                environment:
+                        - PORT_JUP=$PORT_JUP
+                image: $IMAGE
+                container_name: $CONTAINER
+                ports:
+                        - "${PORT}:22"
+                        - "${PORT_JUP}:${PORT_JUP}"  
+                tty: true
+                stdin_open: true 
+                volumes:
+                        - ${SHARA}:${SHARA_DOC}
+                        - ${STORAGE}:${STORAGE_DOC}
+                        - ${DOCKER_SOCK}:/var/run/docker.sock

@@ -1,0 +1,44 @@
+FROM nvcr.io/nvidia/cuda:11.1-devel-ubuntu18.04
+
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update --fix-missing && \
+    apt-get upgrade -y && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3-pip \
+	    python3-dev \
+        vim-gtk \
+        ssh \
+        sudo \
+        openssh-server \
+        make \
+        curl \
+        sudo
+
+RUN echo alias python='/usr/bin/python3' >> /root/.bashrc
+RUN pip3 install --upgrade pip
+
+#Add user
+ARG USERNAME
+ENV WORKSPACE /home/$USERNAME
+RUN useradd -rm -s /bin/bash -G sudo -u 1000 $USERNAME
+RUN echo "$USERNAME:$USERNAME" | chpasswd
+RUN usermod -d $WORKSPACE $USERNAME
+RUN mkdir $WORKSPACE/.local
+RUN mkdir $WORKSPACE/.config
+RUN chown -R $USERNAME:$USERNAME $WORKSPACE
+
+#copy my config files and utils
+COPY ./utils /resources
+COPY ./config /resources/config
+COPY ./keys /resources/keys
+
+#added my utils to users
+RUN echo PATH="/resources:$PATH" > /etc/environment
+
+#SSH
+RUN /resources/config_ssh.sh
+
+EXPOSE 22
