@@ -17,7 +17,6 @@ test:
 	./utils/copy_keys.sh
 	./utils/gpu.sh
 	$(eval export DOCKER_SOCK := ${DOCKER_SOCK})
-	#$(eval export HOST_IP := ${HOST_IP})
 	docker-compose -f ${COMPOSE_PATH} --env-file ${CONFIG} up --build --detach
 up:
 	$(eval export HOST_IP := ${HOST_IP})

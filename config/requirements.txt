@@ -1,4 +1,5 @@
 ranger-fm
 jupyterlab
+pyyaml
 #torch
 #torchvision

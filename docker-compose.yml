@@ -30,7 +30,6 @@ services:
         tty: true
         stdin_open: true 
         volumes:
-                - ${PWD}/utils:/res
                 - ${HOST_WORKSPACE}:/home/${USERNAME}/workspace
                 - ${HOST_STORAGE}:${STORAGE}
                 - ${DOCKER_SOCK}:/var/run/docker.sock

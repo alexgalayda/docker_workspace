@@ -1,18 +1,9 @@
 #!/usr/bin/python3
 import os
 import sys
-from switch_mount import Parser
+from switch_mount import sudstitution_argv as sv
 
 if __name__ == '__main__':
-    mount_flag = '-v'
-    args = sys.argv
+    args = sv(sys.argv)
     args[0] = '/usr/bin/docker'
-    parser = Parser()
-
-    for i, arg in enumerate(args):
-        if arg == mount_flag:
-           path_workspace, path_docker = args[i+1].split(':')
-           path_host = parser.expand_path(path_workspace)
-           args[i+1] = ':'.join([path_host, path_docker])
-    #print(args)
     os.system(' '.join(args))

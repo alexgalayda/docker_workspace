@@ -32,14 +32,11 @@ ARG DOCKER_COMPOSE_CLI_VERSION
 RUN curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_CLI_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
 RUN chmod +x /usr/bin/docker-compose
 
-#COPY ./requirements.txt requirements.txt
-#RUN pip3 install --no-cache-dir -r requirements.txt
-#RUN rm requirements.txt
+RUN pip3 install --no-cache-dir -r /resources/config/requirements.txt
 
-#CMD /bin/bash
 #jupyter lab
-#RUN jupyter lab --generate-config
-#COPY ./config/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
+RUN jupyter lab --generate-config
+#COPY /resources/config/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 #RUN envsubst < /root/.jupyter/jupyter_notebook_config.py > /root/.jupyter/jupyter_notebook_config.py
 
 RUN /resources/init_doc.sh
