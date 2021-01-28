@@ -17,7 +17,9 @@ RUN apt-get update --fix-missing && \
         gettext-base \
         iputils-ping \
         net-tools \
-        build-essential
+        build-essential \
+        libgl1-mesa-glx \
+        libgdal-dev
 
 # install docker client
 #ARG DOCKER_CLI_VERSION="rootless-extras-19.03.9"

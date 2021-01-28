@@ -1,5 +1,11 @@
+numpy
+opencv-python
+Pillow
+Flask
+rasterio
 ranger-fm
 jupyterlab
 pyyaml
+kaggle
 #torch
 #torchvision

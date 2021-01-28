@@ -54,11 +54,13 @@ def substitution_file(path, config='/resources/config/config.env', new_path=None
     with open(path) as file:
         doc_yaml = yaml.load(file, Loader=Loader)
 
-    volumes = doc_yaml['services']['Train']['volumes']
-    for i, vol in enumerate(volumes):
-        path_workspace, path_docker = vol.split(':')
-        path_host = parser.expand_path(path_workspace)
-        volumes[i] = ':'.join([path_host, path_docker])
+    #volumes = doc_yaml['services']['Train']['volumes']
+    for service in doc_yaml['services'].values():
+        volumes = service['volumes']
+        for i, vol in enumerate(volumes):
+            path_workspace, path_docker = vol.split(':')
+            path_host = parser.expand_path(path_workspace)
+            volumes[i] = ':'.join([path_host, path_docker])
 
     with open(new_path, 'w') as file:
         yaml.dump(doc_yaml, file)

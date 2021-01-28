@@ -36,7 +36,7 @@ COPY ./config /resources/config
 COPY ./keys /resources/keys
 
 #added my utils to users
-RUN echo PATH="/resources:$PATH" > /etc/environment
+RUN echo PATH="/resources:/home/$USERNAME/.local/bin:$PATH" > /etc/environment
 
 #SSH
 RUN /resources/config_ssh.sh
