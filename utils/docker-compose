@@ -1,19 +1,26 @@
 #!/usr/bin/python3
 import os
 import sys
+import pathlib
 import subprocess
 from switch_mount import substitution_file as sf
 
 if __name__ == '__main__':
     tmp_path = None
     try:
-        idx = sys.argv.index('-f') + 1
+        idx_e = sys.argv.index('--env-file') + 1
+    except Exception:
+        conf_env = None
+    else:
+        conf_env = os.path.join(pathlib.Path().absolute(), sys.argv[idx_e])
+    try:
+        idx_f = sys.argv.index('-f') + 1
     except Exception:
         pass
     else:
-        tmp_path = sys.argv[idx] + '.tmp'
-        sf(sys.argv[idx], new_path=tmp_path)
-        sys.argv[idx] = tmp_path
+        tmp_path = sys.argv[idx_f] + '.tmp'
+        sf(sys.argv[idx_f], new_path=tmp_path)
+        sys.argv[idx_f] = tmp_path
     sys.argv[0] = '/usr/bin/docker-compose'
     os.system(' '.join(sys.argv))
     if tmp_path: os.remove(tmp_path)

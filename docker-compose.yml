@@ -23,8 +23,9 @@ services:
         image: $IMAGE
         container_name: $CONTAINER
         ports:
-                - "${SSH_PORT}:22"
-                - "${JUP_PORT}:${JUP_PORT}"  
+            - "${SSH_PORT}:22"
+            - "${JUP_PORT}:${JUP_PORT}"
+            - "${PORTS}:${PORTS}"
         depends_on:
             - basic_work_space
         tty: true

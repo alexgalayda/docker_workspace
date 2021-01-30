@@ -2,6 +2,7 @@
 import os
 import argparse
 import yaml
+from environs import Env
 #from yaml import load, dump
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -9,7 +10,12 @@ except ImportError:
     from yaml import Loader, Dumper
 
 class Parser:
-    def __init__(self, path='/resources/config/config.env'):
+    def __init__(self, path='/resources/config/config.env', env=None):
+        if env is None:
+            self.env_list = None
+        else:
+            self.env_list = Env()
+            self.env_list.read_env(env)
         env_vars, host_vars = self.make_vars(path)
         self.host_vars = {keys: self.expand(value) for keys, value in host_vars.items()}
         self.env_vars = {key[5:]: self.expand(env_vars[key[5:]]) for key in self.host_vars.keys()}
@@ -18,6 +24,7 @@ class Parser:
         return 'HOST:\n' + str(self.host_vars) + '\nWS:\n' + str(self.env_vars)
 
     def expand(self, path):
+        path = self.setvars(path)
         path = os.path.expanduser(path)
         return os.path.expandvars(path)
     
@@ -38,6 +45,13 @@ class Parser:
             path = self.expand(path).replace(ws_path, self.host_vars['HOST_' + name])
         return path
 
+    def setvars(self, env):
+        try:
+            env = self.env_list(env[2:-1])
+        except Exception:
+            pass
+        return env
+
 def sudstitution_argv(args, config='/resources/config/config.env'):
     mount_flag = '-v'
     parser = Parser(config)
@@ -54,13 +68,13 @@ def substitution_file(path, config='/resources/config/config.env', new_path=None
     with open(path) as file:
         doc_yaml = yaml.load(file, Loader=Loader)
 
-    #volumes = doc_yaml['services']['Train']['volumes']
     for service in doc_yaml['services'].values():
-        volumes = service['volumes']
-        for i, vol in enumerate(volumes):
-            path_workspace, path_docker = vol.split(':')
-            path_host = parser.expand_path(path_workspace)
-            volumes[i] = ':'.join([path_host, path_docker])
+        if service.get('volumes'):
+            volumes = service['volumes']
+            for i, vol in enumerate(volumes):
+                path_workspace, path_docker = vol.split(':')
+                path_host = parser.expand_path(path_workspace)
+                volumes[i] = ':'.join([path_host, path_docker])
 
     with open(new_path, 'w') as file:
         yaml.dump(doc_yaml, file)
