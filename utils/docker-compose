@@ -19,7 +19,7 @@ if __name__ == '__main__':
         pass
     else:
         tmp_path = sys.argv[idx_f] + '.tmp'
-        sf(sys.argv[idx_f], new_path=tmp_path)
+        sf(sys.argv[idx_f], new_path=tmp_path, env=conf_env)
         sys.argv[idx_f] = tmp_path
     sys.argv[0] = '/usr/bin/docker-compose'
     os.system(' '.join(sys.argv))
