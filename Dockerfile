@@ -38,8 +38,8 @@ RUN pip3 install --no-cache-dir -r /resources/config/requirements.txt
 
 #jupyter lab
 RUN jupyter lab --generate-config
-#COPY /resources/config/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
-#RUN envsubst < /root/.jupyter/jupyter_notebook_config.py > /root/.jupyter/jupyter_notebook_config.py
+COPY /resources/config/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
+RUN envsubst < /root/.jupyter/jupyter_notebook_config.py > /root/.jupyter/jupyter_notebook_config.py
 
 RUN /resources/init_doc.sh
 CMD /usr/sbin/sshd -D
