@@ -19,7 +19,8 @@ RUN apt-get update --fix-missing && \
         net-tools \
         build-essential \
         libgl1-mesa-glx \
-        libgdal-dev
+        libgdal-dev \
+        nodejs
 
 # install docker client
 #ARG DOCKER_CLI_VERSION="rootless-extras-19.03.9"
@@ -34,12 +35,18 @@ ARG DOCKER_COMPOSE_CLI_VERSION
 RUN curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_CLI_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
 RUN chmod +x /usr/bin/docker-compose
 
+#For GDAL
+ARG CPLUS_INCLUDE_PATH=/usr/include/gdal
+ARG C_INCLUDE_PATH=/usr/include/gdal
+
 RUN pip3 install --no-cache-dir -r /resources/config/requirements.txt
 
 #jupyter lab
-RUN jupyter lab --generate-config
-COPY /resources/config/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
-RUN envsubst < /root/.jupyter/jupyter_notebook_config.py > /root/.jupyter/jupyter_notebook_config.py
+ARG USERNAME
+#RUN jupyter lab --generate-config
+RUN runuser -l $USERNAME -c 'jupyter lab --generate-config'
+RUN cp /resources/config/jupyter_lab_config.py /home/$USERNAME/.jupyter/jupyter_lab_config.py
+#RUN envsubst < /resources/config/jupyter_notebook_config.py > /root/.jupyter/jupyter_notebook_config.py
 
 RUN /resources/init_doc.sh
 CMD /usr/sbin/sshd -D

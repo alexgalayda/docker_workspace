@@ -1,11 +1,13 @@
 numpy
 opencv-python
+matplotlib
 Pillow
 Flask
+GDAL==2.2.3
 rasterio
 ranger-fm
 jupyterlab
 pyyaml
 kaggle
-#torch
-#torchvision
+torch
+torchvision

@@ -12,6 +12,7 @@ services:
             context: .
             dockerfile: ./Dockerfile
             args:
+                - USERNAME=$USERNAME
                 - BASE_IMAGE=$BASE_IMAGE
                 #- JUP_PORT=$JUP_PORT
                 - DOCKER_CLI_VERSION=$DOCKER_CLI_VERSION
