@@ -1,4 +1,4 @@
-.PHONY: all up attach stop
+.PHONY: all up attach down
 CONFIG=config/config.env
 include ${CONFIG}
 #export CONFIG=${CONFIG}
@@ -18,5 +18,5 @@ up:
 	docker-compose -f ${COMPOSE_PATH} --env-file ${CONFIG} up --build --detach
 attach:
 	docker attach ${CONTAINER}
-stop:
+down:
 	docker-compose down

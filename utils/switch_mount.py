@@ -10,15 +10,16 @@ except ImportError:
     from yaml import Loader, Dumper
 
 class Parser:
-    def __init__(self, path='/resources/config/config.env', env=None):
+    def __init__(self, path='/resources/config/config.env', env=None, prefix='HOST_'):
         if env is None:
             self.env_list = None
         else:
             self.env_list = Env()
             self.env_list.read_env(env)
+        self.prefix = prefix
         env_vars, host_vars = self.make_vars(path)
         self.host_vars = {keys: self.expand(value) for keys, value in host_vars.items()}
-        self.env_vars = {key[5:]: self.expand(env_vars[key[5:]]) for key in self.host_vars.keys()}
+        self.env_vars = {key[len(prefix):]: self.expand(env_vars[key[len(prefix):]]) for key in self.host_vars.keys()}
     
     def __repr__(self):
         return 'HOST:\n' + str(self.host_vars) + '\nWS:\n' + str(self.env_vars)
@@ -28,25 +29,28 @@ class Parser:
         path = os.path.expanduser(path)
         return os.path.expandvars(path)
     
-    def make_vars(self, config='config.env'):
+    def make_vars(self, config='config.env', prefix=None):
+        if prefix is None: prefix = self.prefix
         env_vars = {}
         host_vars = {}
         with open(os.path.expanduser(config)) as f:
             for line in f:
                 if not line.startswith('#') and line.strip():
                     key, value = line.strip().split('=', 1)
-                    if key.startswith('HOST_'):
+                    if key.startswith(prefix):
                         host_vars[key] = value
                     env_vars[key] = value
         return env_vars, host_vars
 
-    def expand_path(self, path):
+    def expand_path(self, path, prefix=None):
+        if prefix is None: prefix = self.prefix
         for name, ws_path in self.env_vars.items():
-            path = self.expand(path).replace(ws_path, self.host_vars['HOST_' + name])
+            path = self.expand(path).replace(ws_path, self.host_vars[prefix + name])
         return path
 
     def setvars(self, env):
         try:
+            #${ENV} -> ENV
             env = self.env_list(env[2:-1])
         except Exception:
             pass
@@ -54,7 +58,7 @@ class Parser:
 
 def sudstitution_argv(args, config='/resources/config/config.env'):
     mount_flag = '-v'
-    parser = Parser(config)
+    parser = Parser(config, env)
     for i, arg in enumerate(args):
         if arg == mount_flag:
             path_workspace, path_docker = args[i+1].split(':')
@@ -62,7 +66,7 @@ def sudstitution_argv(args, config='/resources/config/config.env'):
             args[i+1] = ':'.join([path_host, path_docker])
     return args
 
-def substitution_file(path, config='/resources/config/config.env', new_path=None):
+def substitution_file(path, config='/resources/config/config.env', new_path=None, env=None):
     parser = Parser(config)
     path = parser.expand(path)
     with open(path) as file:
