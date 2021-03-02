@@ -60,7 +60,7 @@ class Parser:
 
 def sudstitution_argv(args, config='/resources/config/config.env'):
     mount_flag = '-v'
-    parser = Parser(config, env)
+    parser = Parser(config)
     for i, arg in enumerate(args):
         if arg == mount_flag:
             path_workspace, path_docker = args[i+1].split(':')
@@ -69,7 +69,7 @@ def sudstitution_argv(args, config='/resources/config/config.env'):
     return args
 
 def substitution_file(path, config='/resources/config/config.env', new_path=None, env=None):
-    parser = Parser(config)
+    parser = Parser(config, env)
     path = parser.expand(path)
     with open(path) as file:
         doc_yaml = yaml.load(file, Loader=Loader)
