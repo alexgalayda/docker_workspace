@@ -22,7 +22,7 @@ Configuration description will appear here soon
 Description of available features coming soon
 
 ## Coming soon
-* Wim setting
+* Vim setting
 * Username instead of root
 * Transferring all settings to dotfiles
 * Ability to use kubernetes instead of docker
