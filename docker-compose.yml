@@ -29,6 +29,8 @@ services:
             - "${PORTS}:${PORTS}"
         depends_on:
             - basic_work_space
+        runtime: nvidia
+        shm_size: 24gb
         tty: true
         stdin_open: true 
         volumes:

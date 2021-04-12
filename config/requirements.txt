@@ -18,3 +18,5 @@ torch
 torchvision
 albumentations
 tensorboard
+nodejs
+loguru
