@@ -16,13 +16,10 @@ Send the path to it in `PUB` the `config/config.env`.
 `alias tt='ssh -t -i ~/.ssh/id_rsa root@HOSTNAME -p PORT "cd /mnt/workspace; bash"'`
 
 ## Using
-Configuration description will appear here soon
-
-## Already appeared
-Description of available features coming soon
+1) Configuration description will appear here soon
+2) You can use my default vim setting or generate your own [there](https://vim-bootstrap.com/)
 
 ## Coming soon
 * Vim setting
-* Username instead of root
 * Transferring all settings to dotfiles
 * Ability to use kubernetes instead of docker
