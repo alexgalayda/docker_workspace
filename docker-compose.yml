@@ -14,7 +14,7 @@ services:
             args:
                 - USERNAME=$USERNAME
                 - BASE_IMAGE=$BASE_IMAGE
-                #- JUP_PORT=$JUP_PORT
+                - JUP_PORT=$JUP_PORT
                 - DOCKER_CLI_VERSION=$DOCKER_CLI_VERSION
                 - DOCKER_COMPOSE_CLI_VERSION=$DOCKER_COMPOSE_CLI_VERSION
         environment:
@@ -36,4 +36,5 @@ services:
         volumes:
                 - ${HOST_WORKSPACE}:/home/${USERNAME}/workspace
                 - ${HOST_STORAGE}:${STORAGE}
+                - /mnt/datasets/datasets/scanfilter_pano:/mnt/teeth
                 - ${DOCKER_SOCK}:/var/run/docker.sock
