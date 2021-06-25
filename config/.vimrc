@@ -13,3 +13,17 @@ set shiftwidth=4
 set autoindent
 "" vim recognizes three file formats (unix, dos, mac) that determine what line ending characters (line terminators) are removed from each line when a file is read, or are added to each line when a file is written.
 set fileformat=unix
+
+"sugar
+""Enable search highlighting.
+set hlsearch
+""Use an encoding that supports unicode.
+set encoding=utf-8
+""Enable syntax highlighting.
+syntax enable
+""Display command line’s tab complete options as a menu.
+set wildmenu
+""Set the window’s title, reflecting the file currently being edited.
+set title
+""Use colors that suit a dark background.
+set background=dark
