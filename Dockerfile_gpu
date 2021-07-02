@@ -1,0 +1,42 @@
+#FROM nvcr.io/nvidia/pytorch:21.06-py3
+#FROM nvcr.io/nvidia/cuda:11.3.1-devel-ubuntu20.04
+FROM nvcr.io/nvidia/cuda:11.3.1-cudnn8-runtime-ubuntu20.04
+
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezon
+
+RUN apt-get update --fix-missing && \
+    apt-get upgrade -y && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        software-properties-common \
+        python3-pip \
+	    python3-dev \
+        sudo
+
+#RUN /tmp/ttt/NVIDIA-Linux-x86_64-460.84.run
+#RUN sudo apt update
+RUN sudo add-apt-repository ppa:graphics-drivers
+RUN sudo apt-key adv --fetch-keys  http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+RUN sudo apt update
+RUN sudo DEBIAN_FRONTEND=noninteractive apt install -y cuda-11-3
+RUN export PATH=/usr/local/cuda-11.3/bin:$PATH
+RUN export LD_LIBRARY_PATH=/usr/local/cuda-11.0/lib64:$LD_LIBRARY_PATH
+
+COPY utils /tmp/ttt
+WORKDIR /tmp/ttt
+RUN tar -xzvf cudnn-11.3-linux-x64-v8.2.1.32.tgz
+
+RUN sudo cp cuda/include/cudnn*.h /usr/local/cuda/include
+RUN sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+RUN sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
+
+#RUN add-apt-repository -y ppa:deadsnakes/ppa && \
+#    apt-get install -y python3.9 && \
+#    ln -sf /usr/bin/python3.9 /bin/python3
+#RUN echo PATH="/bin:$PATH" > /etc/environment
+
+RUN pip3 install --upgrade pip
+RUN pip3 install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+CMD python3 -c 'import torch; print(torch.cuda.is_available())'

@@ -9,6 +9,5 @@ for filename in /resources/keys/*.pub; do
 done
 
 chown -R $USERNAME:$USERNAME $WORKSPACE/.ssh
-
 mkdir -p /var/run/sshd
 sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
