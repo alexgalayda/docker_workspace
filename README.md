@@ -8,9 +8,9 @@ For sophisticated users there is a ready-made implementation in [kubernetes](htt
 
 ## Requirements
 Installing Cuda:
-	* [Installing the NVIDIA driver, CUDA and cuDNN](https://gist.github.com/kmhofmann/cee7c0053da8cc09d62d74a6a4c1c5e4)
-	* also helpful [this](https://medium.com/@exesse/cuda-10-1-installation-on-ubuntu-18-04-lts-d04f89287130) and [this](https://www.pugetsystems.com/labs/hpc/How-to-install-CUDA-9-2-on-Ubuntu-18-04-1184/)
-	* if you have diff beetween nvidia-smi and nvcc -V read [this](https://stackoverflow.com/questions/53422407/different-cuda-versions-shown-by-nvcc-and-nvidia-smi)
+* [Installing the NVIDIA driver, CUDA and cuDNN](https://gist.github.com/kmhofmann/cee7c0053da8cc09d62d74a6a4c1c5e4)
+* also helpful [this](https://medium.com/@exesse/cuda-10-1-installation-on-ubuntu-18-04-lts-d04f89287130) and [this](https://www.pugetsystems.com/labs/hpc/How-to-install-CUDA-9-2-on-Ubuntu-18-04-1184/)
+* if you have diff beetween nvidia-smi and nvcc -V read [this](https://stackoverflow.com/questions/53422407/different-cuda-versions-shown-by-nvcc-and-nvidia-smi)
 
 ## Quick start
 * Create a private and public key pair or use your current.
